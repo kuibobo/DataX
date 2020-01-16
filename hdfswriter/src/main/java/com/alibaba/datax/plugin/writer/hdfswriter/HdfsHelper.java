@@ -477,6 +477,7 @@ public  class HdfsHelper {
         return orcSerde;
     }
 
+
     public static MutablePair<List<Object>, Boolean> transportOneRecord(
             Record record,List<Configuration> columnsConfiguration,
             TaskPluginCollector taskPluginCollector){
@@ -492,6 +493,7 @@ public  class HdfsHelper {
                 //todo as method
                 if (null != column.getRawData()) {
                     String rowData = column.getRawData().toString();
+
                     SupportHiveDataType columnType = SupportHiveDataType.valueOf(
                             columnsConfiguration.get(i).getString(Key.TYPE).toUpperCase());
                     //根据writer端类型配置做类型转换
@@ -518,7 +520,7 @@ public  class HdfsHelper {
                             case STRING:
                             case VARCHAR:
                             case CHAR:
-                                recordList.add(column.asString());
+                                recordList.add(column.asString().replaceAll("\n|\r|\t", ""));
                                 break;
                             case BOOLEAN:
                                 recordList.add(column.asBoolean());
