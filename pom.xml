@@ -96,6 +96,7 @@
         <module>gdbwriter</module>
         <module>cassandrawriter</module>
         <module>kingbasewriter</module>
+        <module>kafkawriter</module>
         
         <!-- common support module -->
         <module>plugin-rdbms-util</module>

@@ -10,4 +10,6 @@
 新增人大金仓数据库 读写插件， HttpReader插件
 
 
+[kafkawriter](https://github.com/lizu18xz/DataX)
+
 
