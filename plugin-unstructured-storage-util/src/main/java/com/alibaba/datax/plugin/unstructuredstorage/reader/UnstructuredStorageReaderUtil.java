@@ -404,6 +404,8 @@ public class UnstructuredStorageReaderUtil {
 						case STRING:
 							columnGenerated = new StringColumn(columnValue);
 							break;
+						case INT:
+						case BIGINT:
 						case LONG:
 							try {
 								columnGenerated = new LongColumn(columnValue);
@@ -413,6 +415,7 @@ public class UnstructuredStorageReaderUtil {
 										"LONG"));
 							}
 							break;
+						case DECIMAL:
 						case DOUBLE:
 							try {
 								columnGenerated = new DoubleColumn(columnValue);
@@ -506,7 +509,7 @@ public class UnstructuredStorageReaderUtil {
 	}
 
 	private enum Type {
-		STRING, LONG, BOOLEAN, DOUBLE, DATE, ;
+		STRING, INT, LONG, BOOLEAN, DOUBLE, DATE, BIGINT, DECIMAL
 	}
 
 	/**

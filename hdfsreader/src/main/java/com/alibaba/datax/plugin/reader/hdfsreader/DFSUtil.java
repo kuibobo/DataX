@@ -401,7 +401,9 @@ public class DFSUtil {
                         case STRING:
                             columnGenerated = new StringColumn(columnValue);
                             break;
+                        case INT:
                         case LONG:
+                        case BIGINT:
                             try {
                                 columnGenerated = new LongColumn(columnValue);
                             } catch (Exception e) {
@@ -411,6 +413,8 @@ public class DFSUtil {
                             }
                             break;
                         case DOUBLE:
+                        case FLOAT:
+                        case DECIMAL:
                             try {
                                 columnGenerated = new DoubleColumn(columnValue);
                             } catch (Exception e) {
@@ -513,7 +517,7 @@ public class DFSUtil {
     }
 
     private enum Type {
-        STRING, LONG, BOOLEAN, DOUBLE, DATE,
+        STRING, LONG, BOOLEAN, DOUBLE, DATE, DECIMAL, FLOAT, BIGINT, INT
     }
 
     public boolean checkHdfsFileType(String filepath, String specifiedFileType) {
