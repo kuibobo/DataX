@@ -67,6 +67,7 @@
         <module>opentsdbreader</module>
         <module>cassandrareader</module>
         <module>kingbasereader</module>
+        <module>httpreader</module>
 
         <!-- writer -->
         <module>mysqlwriter</module>
