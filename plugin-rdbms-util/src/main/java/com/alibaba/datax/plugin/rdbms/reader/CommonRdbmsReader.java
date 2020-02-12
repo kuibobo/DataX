@@ -279,10 +279,11 @@ public class CommonRdbmsReader {
                         record.addColumn(new DoubleColumn(rs.getString(i)));
                         break;
 
+                    case 101:// oracle.sql.BINARY_DOUBLE
                     case Types.FLOAT:
                     case Types.REAL:
                     case Types.DOUBLE:
-                        record.addColumn(new DoubleColumn(rs.getString(i)));
+                        record.addColumn(new DoubleColumn(rs.getBigDecimal(i)));
                         break;
 
                     case Types.TIME:
