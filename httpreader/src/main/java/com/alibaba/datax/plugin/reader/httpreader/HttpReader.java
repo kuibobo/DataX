@@ -1,22 +1,14 @@
 package com.alibaba.datax.plugin.reader.httpreader;
 
-import com.alibaba.datax.common.exception.DataXException;
 import com.alibaba.datax.common.plugin.RecordSender;
 import com.alibaba.datax.common.spi.Reader;
 import com.alibaba.datax.common.util.Configuration;
-import com.alibaba.datax.plugin.reader.httpreader.utils.WebClient;
-import com.alibaba.datax.plugin.unstructuredstorage.reader.UnstructuredStorageReaderUtil;
-import org.apache.commons.io.Charsets;
-import org.apache.commons.lang3.StringUtils;
+import com.alibaba.datax.plugin.reader.httpreader.utils.JSONReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class HttpReader extends Reader {
 
@@ -26,13 +18,15 @@ public class HttpReader extends Reader {
 
         private Configuration originConfig = null;
 
-        private List<String> sourceFiles;
+        private String url;
 
+        private String table;
 
         @Override
         public void init() {
             this.originConfig = this.getPluginJobConf();
-            this.sourceFiles = originConfig.getList(Key.URLS, String.class);
+            this.url = originConfig.getString(Key.URL);
+            this.table = originConfig.getString(Key.TABLE);
 
             this.validateParameter();
         }
@@ -76,22 +70,11 @@ public class HttpReader extends Reader {
             LOG.debug("split() begin...");
             List<Configuration> readerSplitConfigs = new ArrayList<Configuration>();
 
-            // warn:每个slice拖且仅拖一个文件,
-            // int splitNumber = adviceNumber;
-            int splitNumber = this.sourceFiles.size();
-            if (0 == splitNumber) {
-                throw DataXException.asDataXException(HttpReaderErrorCode.EMPTY_DIR_EXCEPTION,
-                        String.format("未能找到待读取的文件,请确认您的配置项path: %s", this.originConfig.getString(Key.URLS)));
-            }
+            Configuration splitedConfig = this.originConfig.clone();
+            splitedConfig.set(Constant.URL, this.url);
+            splitedConfig.set(Constant.TABLE, this.table);
+            readerSplitConfigs.add(splitedConfig);
 
-            List<List<String>> splitedSourceFiles = this.splitSourceFiles(
-                    this.sourceFiles, splitNumber);
-            for (List<String> files : splitedSourceFiles) {
-                Configuration splitedConfig = this.originConfig.clone();
-                splitedConfig.set(Constant.SOURCE_FILES, files);
-                readerSplitConfigs.add(splitedConfig);
-            }
-            LOG.debug("split() ok and end...");
             return readerSplitConfigs;
         }
 
@@ -123,13 +106,13 @@ public class HttpReader extends Reader {
         private static Logger LOG = LoggerFactory.getLogger(Task.class);
 
         private Configuration readerSliceConfig;
-        private List<String> sourceFiles;
+        private String url;
 
 
         @Override
         public void init() {
             this.readerSliceConfig = this.getPluginJobConf();
-            this.sourceFiles = this.readerSliceConfig.getList(Constant.SOURCE_FILES, String.class);
+            this.url = this.readerSliceConfig.getString(Constant.URL);
         }
 
         @Override
@@ -141,18 +124,8 @@ public class HttpReader extends Reader {
         public void startRead(RecordSender recordSender) {
             LOG.debug("start read source files...");
 
-            WebClient client = new WebClient();
-            for (String url : this.sourceFiles) {
-                LOG.info(String.format("reading url : [%s]", url));
-
-                InputStream inputStream = null;
-
-                inputStream = new ByteArrayInputStream(client.get(url));
-
-                UnstructuredStorageReaderUtil.readFromStream(inputStream, url, this.readerSliceConfig,
-                        recordSender, this.getTaskPluginCollector());
-                recordSender.flush();
-            }
+            JSONReader.readFromUrl(url, this.readerSliceConfig, recordSender);
+            recordSender.flush();
             LOG.debug("end read source files...");
         }
 
