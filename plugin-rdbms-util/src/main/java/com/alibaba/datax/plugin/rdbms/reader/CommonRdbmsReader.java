@@ -246,6 +246,10 @@ public class CommonRdbmsReader {
                 for (int i = 1; i <= columnNumber; i++) {
                     switch (metaData.getColumnType(i)) {
 
+                    case Types.ROWID://oracle rowid
+                    case Types.STRUCT: // oracle st_geometry 类型
+                    case -157: // sqlserver Geometry类型
+                    case Types.SQLXML:
                     case Types.CHAR:
                     case Types.NCHAR:
                     case Types.VARCHAR:
@@ -274,6 +278,7 @@ public class CommonRdbmsReader {
                         record.addColumn(new LongColumn(rs.getString(i)));
                         break;
 
+                    case Types.ARRAY: // oracle Number
                     case Types.NUMERIC:
                     case Types.DECIMAL:
                         record.addColumn(new DoubleColumn(rs.getString(i)));
