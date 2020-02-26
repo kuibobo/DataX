@@ -281,7 +281,7 @@ public class CommonRdbmsReader {
                     case Types.ARRAY: // oracle Number
                     case Types.NUMERIC:
                     case Types.DECIMAL:
-                        record.addColumn(new DoubleColumn(rs.getString(i)));
+                        record.addColumn(new DoubleColumn(rs.getBigDecimal(i)));
                         break;
 
                     case 101:// oracle.sql.BINARY_DOUBLE
