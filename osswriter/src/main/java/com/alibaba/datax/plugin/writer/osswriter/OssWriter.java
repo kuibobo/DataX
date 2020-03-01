@@ -238,6 +238,7 @@ public class OssWriter extends Writer {
         private String nullFormat;
         private String encoding;
         private char fieldDelimiter;
+        private char lineSeparrator;
         private String dateFormat;
         private DateFormat dateParse;
         private String fileFormat;
@@ -268,6 +269,10 @@ public class OssWriter extends Writer {
                     .getChar(
                             com.alibaba.datax.plugin.unstructuredstorage.writer.Key.FIELD_DELIMITER,
                             com.alibaba.datax.plugin.unstructuredstorage.writer.Constant.DEFAULT_FIELD_DELIMITER);
+            this.lineSeparrator = this.writerSliceConfig
+                    .getChar(
+                            com.alibaba.datax.plugin.unstructuredstorage.writer.Key.LINE_SEPARATOR,
+                            com.alibaba.datax.plugin.unstructuredstorage.writer.Constant.DEFAULT_LINE_SEPARATOR);
             this.fileFormat = this.writerSliceConfig
                     .getString(
                             com.alibaba.datax.plugin.unstructuredstorage.writer.Key.FILE_FORMAT,
@@ -299,7 +304,7 @@ public class OssWriter extends Writer {
             StringBuffer sb = sw.getBuffer();
             UnstructuredWriter unstructuredWriter = TextCsvWriterManager
                     .produceUnstructuredWriter(this.fileFormat,
-                            this.fieldDelimiter, sw);
+                            this.fieldDelimiter, this.lineSeparrator, sw);
             Record record = null;
 
             LOG.info(String.format(

@@ -1,10 +1,14 @@
 package com.alibaba.datax.plugin.unstructuredstorage.writer;
 
+import org.apache.commons.io.IOUtils;
+
 public class Constant {
 
 	public static final String DEFAULT_ENCODING = "UTF-8";
 
 	public static final char DEFAULT_FIELD_DELIMITER = ',';
+
+	public static final char DEFAULT_LINE_SEPARATOR = IOUtils.LINE_SEPARATOR.charAt(0);
 
 	public static final String DEFAULT_NULL_FORMAT = "\\N";
 	

@@ -13,12 +13,12 @@ import com.csvreader.CsvWriter;
 
 public class TextCsvWriterManager {
     public static UnstructuredWriter produceUnstructuredWriter(
-            String fileFormat, char fieldDelimiter, Writer writer) {
+            String fileFormat, char fieldDelimiter, char lineSeparrator, Writer writer) {
         // warn: false means plain text(old way), true means strict csv format
         if (Constant.FILE_FORMAT_TEXT.equals(fileFormat)) {
-            return new TextWriterImpl(writer, fieldDelimiter);
+            return new TextWriterImpl(writer, fieldDelimiter, lineSeparrator);
         } else {
-            return new CsvWriterImpl(writer, fieldDelimiter);
+            return new CsvWriterImpl(writer, fieldDelimiter, lineSeparrator);
         }
     }
 }
@@ -27,16 +27,19 @@ class CsvWriterImpl implements UnstructuredWriter {
     private static final Logger LOG = LoggerFactory
             .getLogger(CsvWriterImpl.class);
     // csv 严格符合csv语法, 有标准的转义等处理
+    private char lineSeparrator;
     private char fieldDelimiter;
     private CsvWriter csvWriter;
 
-    public CsvWriterImpl(Writer writer, char fieldDelimiter) {
+    public CsvWriterImpl(Writer writer, char fieldDelimiter, char lineSeparrator) {
         this.fieldDelimiter = fieldDelimiter;
+        this.lineSeparrator = lineSeparrator;
         this.csvWriter = new CsvWriter(writer, this.fieldDelimiter);
         this.csvWriter.setTextQualifier('"');
         this.csvWriter.setUseTextQualifier(true);
         // warn: in linux is \n , in windows is \r\n
-        this.csvWriter.setRecordDelimiter(IOUtils.LINE_SEPARATOR.charAt(0));
+        //this.csvWriter.setRecordDelimiter(IOUtils.LINE_SEPARATOR.charAt(0));
+        this.csvWriter.setRecordDelimiter(lineSeparrator);
     }
 
     @Override
@@ -64,10 +67,12 @@ class TextWriterImpl implements UnstructuredWriter {
     private static final Logger LOG = LoggerFactory
             .getLogger(TextWriterImpl.class);
     // text StringUtils的join方式, 简单的字符串拼接
+    private char lineSeparrator;
     private char fieldDelimiter;
     private Writer textWriter;
 
-    public TextWriterImpl(Writer writer, char fieldDelimiter) {
+    public TextWriterImpl(Writer writer, char fieldDelimiter, char lineSeparrator) {
+        this.lineSeparrator = lineSeparrator;
         this.fieldDelimiter = fieldDelimiter;
         this.textWriter = writer;
     }
@@ -77,9 +82,13 @@ class TextWriterImpl implements UnstructuredWriter {
         if (splitedRows.isEmpty()) {
             LOG.info("Found one record line which is empty.");
         }
+//        this.textWriter.write(String.format("%s%s",
+//                StringUtils.join(splitedRows, this.fieldDelimiter),
+//                IOUtils.LINE_SEPARATOR));
+
         this.textWriter.write(String.format("%s%s",
                 StringUtils.join(splitedRows, this.fieldDelimiter),
-                IOUtils.LINE_SEPARATOR));
+                this.lineSeparrator));
     }
 
     @Override
