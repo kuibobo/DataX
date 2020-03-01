@@ -46,7 +46,7 @@ public class JSONReader {
         WebClient client = new WebClient();
         int pageIndex = 1;
         int pageSize = 10000;
-        String table = readerSliceConfig.getString(Constant.URL);
+        String table = readerSliceConfig.getString(Constant.TABLE);
         String reqUrl = null;
         JSONObject json = null;
         JSONArray jarr = null;
@@ -74,7 +74,7 @@ public class JSONReader {
         for (ColumnEntry columnConfig : columns) {
             Column columnGenerated = null;
             String columnValue = json.getString(columnConfig.getName());
-            String columnType = columnConfig.getType();
+            String columnType = columnConfig.getType().toUpperCase();
 
             switch (Type.valueOf(columnType)) {
                 case STRING:
