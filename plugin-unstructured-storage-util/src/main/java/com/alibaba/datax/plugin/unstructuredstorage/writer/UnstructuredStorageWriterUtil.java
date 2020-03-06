@@ -273,8 +273,10 @@ public class UnstructuredStorageWriterUtil {
         char lineSeparrator = config.getChar(Key.LINE_SEPARATOR,
                 Constant.DEFAULT_LINE_SEPARATOR);
 
+        String filterString = config.getString(Key.FILTER_STRING, "");
+
         UnstructuredWriter unstructuredWriter = TextCsvWriterManager
-                .produceUnstructuredWriter(fileFormat, fieldDelimiter, lineSeparrator, writer);
+                .produceUnstructuredWriter(fileFormat, fieldDelimiter, lineSeparrator, filterString, writer);
 
         List<String> headers = config.getList(Key.HEADER, String.class);
         if (null != headers && !headers.isEmpty()) {

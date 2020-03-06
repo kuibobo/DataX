@@ -12,6 +12,8 @@ public class Key {
 
     public static final String LINE_SEPARATOR = "lineSeparrator";
 
+    public static final String FILTER_STRING = "filterString";
+
     // not must, default UTF-8
     public static final String ENCODING = "encoding";
 

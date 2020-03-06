@@ -304,7 +304,7 @@ public class OssWriter extends Writer {
             StringBuffer sb = sw.getBuffer();
             UnstructuredWriter unstructuredWriter = TextCsvWriterManager
                     .produceUnstructuredWriter(this.fileFormat,
-                            this.fieldDelimiter, this.lineSeparrator, sw);
+                            this.fieldDelimiter, this.lineSeparrator, null, sw);
             Record record = null;
 
             LOG.info(String.format(
