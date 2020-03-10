@@ -410,6 +410,12 @@ public class CommonRdbmsWriter {
 
         protected PreparedStatement fillPreparedStatementColumnType(PreparedStatement preparedStatement, int columnIndex, int columnSqltype, Column column) throws SQLException {
             java.util.Date utilDate;
+
+            if (column.getRawData() == null) {
+                preparedStatement.setNull(columnIndex + 1, columnSqltype);
+                return preparedStatement;
+            }
+
             switch (columnSqltype) {
                 case Types.CHAR:
                 case Types.NCHAR:
