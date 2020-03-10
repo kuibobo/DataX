@@ -319,7 +319,7 @@ public class CommonRdbmsReader {
                     // warn: bit(>1) -> Types.VARBINARY 可使用BytesColumn
                     case Types.BOOLEAN:
                     case Types.BIT:
-                        record.addColumn(new BoolColumn(rs.getBoolean(i)));
+                        record.addColumn(new BoolColumn((Boolean)rs.getObject(i)));
                         break;
 
                     case Types.NULL:
