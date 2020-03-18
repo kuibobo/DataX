@@ -12,12 +12,13 @@ import java.util.List;
 
 public class SqlServerReader extends Reader {
 
-	private static final DataBaseType DATABASE_TYPE = DataBaseType.SQLServer;
+	private static DataBaseType DATABASE_TYPE = DataBaseType.SQLServer;
 
 	public static class Job extends Reader.Job {
 
 		private Configuration originalConfig = null;
 		private CommonRdbmsReader.Job commonRdbmsReaderJob;
+		private String dbVersion;
 
 		@Override
 		public void init() {
@@ -25,6 +26,12 @@ public class SqlServerReader extends Reader {
 			int fetchSize = this.originalConfig.getInt(
 					com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE,
 					Constant.DEFAULT_FETCH_SIZE);
+			String dbVersion = this.originalConfig.getString(Key.DB_VERSION, Constant.DEFAULT_DB_VERSION);
+			if (Constant.DEFAULT_DB_VERSION.equals(dbVersion))
+				DATABASE_TYPE = DataBaseType.SQLServer2000;
+			else
+				DATABASE_TYPE = DataBaseType.SQLServer;
+
 			if (fetchSize < 1) {
 				throw DataXException
 						.asDataXException(DBUtilErrorCode.REQUIRED_VALUE,
@@ -34,9 +41,7 @@ public class SqlServerReader extends Reader {
 			this.originalConfig.set(
 					com.alibaba.datax.plugin.rdbms.reader.Constant.FETCH_SIZE,
 					fetchSize);
-
-			this.commonRdbmsReaderJob = new CommonRdbmsReader.Job(
-					DATABASE_TYPE);
+			this.commonRdbmsReaderJob = new CommonRdbmsReader.Job(DATABASE_TYPE);
 			this.commonRdbmsReaderJob.init(this.originalConfig);
 		}
 
@@ -63,9 +68,11 @@ public class SqlServerReader extends Reader {
 		private Configuration readerSliceConfig;
 		private CommonRdbmsReader.Task commonRdbmsReaderTask;
 
+
 		@Override
 		public void init() {
 			this.readerSliceConfig = super.getPluginJobConf();
+
 			this.commonRdbmsReaderTask = new CommonRdbmsReader.Task(
 					DATABASE_TYPE ,super.getTaskGroupId(), super.getTaskId());
 			this.commonRdbmsReaderTask.init(this.readerSliceConfig);

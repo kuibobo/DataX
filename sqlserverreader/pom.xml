@@ -35,6 +35,29 @@
 			<systemPath>${basedir}/src/main/lib/mssql-jdbc-8.2.0.jre8.jar</systemPath>
 		</dependency>
 
+		<!-- sqlserver 2000 -->
+		<dependency>
+			<groupId>sqljdbc3</groupId>
+			<artifactId>mssqlserver</artifactId>
+			<scope>system</scope>
+			<version>3.0</version>
+			<systemPath>${basedir}/src/main/lib/mssqlserver.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>sqljdbc3</groupId>
+			<artifactId>msbase</artifactId>
+			<scope>system</scope>
+			<version>3.0</version>
+			<systemPath>${basedir}/src/main/lib/msbase.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>sqljdbc3</groupId>
+			<artifactId>msutil</artifactId>
+			<scope>system</scope>
+			<version>3.0</version>
+			<systemPath>${basedir}/src/main/lib/msutil.jar</systemPath>
+		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba.datax</groupId>
 			<artifactId>plugin-rdbms-util</artifactId>

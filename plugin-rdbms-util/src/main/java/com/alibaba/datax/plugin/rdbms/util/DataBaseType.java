@@ -15,6 +15,7 @@ public enum DataBaseType {
     DRDS("drds", "com.mysql.jdbc.Driver"),
     Oracle("oracle", "oracle.jdbc.OracleDriver"),
     SQLServer("sqlserver", "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
+    SQLServer2000("sqlserver2000", "com.microsoft.jdbc.sqlserver.SQLServerDriver"),
     PostgreSQL("postgresql", "org.postgresql.Driver"),
     RDBMS("rdbms", "com.alibaba.datax.plugin.rdbms.util.DataBaseType"),
     DB2("db2", "com.ibm.db2.jcc.DB2Driver"),
@@ -49,6 +50,7 @@ public enum DataBaseType {
                 break;
             case Oracle:
                 break;
+            case SQLServer2000:
             case SQLServer:
                 break;
             case DB2:
