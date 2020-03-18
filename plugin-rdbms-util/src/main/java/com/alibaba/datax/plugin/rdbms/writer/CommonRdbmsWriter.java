@@ -520,7 +520,8 @@ public class CommonRdbmsWriter {
                     break;
 
                 case Types.BOOLEAN:
-                    preparedStatement.setString(columnIndex + 1, column.asString());
+                    //preparedStatement.setString(columnIndex + 1, column.asString());
+                    preparedStatement.setBoolean(columnIndex + 1, column.asBoolean());
                     break;
 
                 // warn: bit(1) -> Types.BIT 可使用setBoolean
