@@ -497,16 +497,19 @@ public class CommonRdbmsWriter {
 
                 case Types.TIMESTAMP:
                     java.sql.Timestamp sqlTimestamp = null;
-                    try {
-                        utilDate = column.asDate();
-                    } catch (DataXException e) {
-                        throw new SQLException(String.format(
-                                "TIMESTAMP 类型转换错误：[%s]", column));
+                    if (StringUtils.isEmpty(column.asString())) {
+                        utilDate = null;
+                    } else {
+                        try {
+                            utilDate = column.asDate();
+                        } catch (DataXException e) {
+                            throw new SQLException(String.format(
+                                    "TIMESTAMP 类型转换错误：[%s]", column));
+                        }
                     }
 
                     if (null != utilDate) {
-                        sqlTimestamp = new java.sql.Timestamp(
-                                utilDate.getTime());
+                        sqlTimestamp = new java.sql.Timestamp(utilDate.getTime());
                     }
                     preparedStatement.setTimestamp(columnIndex + 1, sqlTimestamp);
                     break;
@@ -538,7 +541,7 @@ public class CommonRdbmsWriter {
                             .asDataXException(
                                     DBUtilErrorCode.UNSUPPORTED_TYPE,
                                     String.format(
-                                            "您的配置文件中的列配置信息有误. 因为DataX 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d], 字段Java类型:[%s]. 请修改表中该字段的类型或者不同步该字段.",
+                                            "您的配置文件中的列配置信息有误. 因为App 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d], 字段Java类型:[%s]. 请修改表中该字段的类型或者不同步该字段.",
                                             this.resultSetMetaData.getLeft()
                                                     .get(columnIndex),
                                             this.resultSetMetaData.getMiddle()

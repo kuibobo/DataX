@@ -452,7 +452,7 @@ public  class HdfsHelper {
                             .asDataXException(
                                     HdfsWriterErrorCode.ILLEGAL_VALUE,
                                     String.format(
-                                            "您的配置文件中的列配置信息有误. 因为DataX 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d]. 请修改表中该字段的类型或者不同步该字段.",
+                                            "您的配置文件中的列配置信息有误. 因为App 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d]. 请修改表中该字段的类型或者不同步该字段.",
                                             eachColumnConf.getString(Key.NAME),
                                             eachColumnConf.getString(Key.TYPE)));
             }
@@ -536,7 +536,7 @@ public  class HdfsHelper {
                                         .asDataXException(
                                                 HdfsWriterErrorCode.ILLEGAL_VALUE,
                                                 String.format(
-                                                        "您的配置文件中的列配置信息有误. 因为DataX 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d]. 请修改表中该字段的类型或者不同步该字段.",
+                                                        "您的配置文件中的列配置信息有误. 因为App 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%d]. 请修改表中该字段的类型或者不同步该字段.",
                                                         columnsConfiguration.get(i).getString(Key.NAME),
                                                         columnsConfiguration.get(i).getString(Key.TYPE)));
                         }

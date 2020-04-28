@@ -161,14 +161,19 @@ public class DFSUtil {
         // 获取要读取的文件的根目录的所有二级子文件目录
         FileStatus stats[] = hdfs.listStatus(listFiles);
 
+        LOG.info(String.format("读取[%d]个文件", stats.length));
         for (FileStatus f : stats) {
             // 判断是不是目录，如果是目录，递归调用
             if (f.isDirectory()) {
                 LOG.info(String.format("[%s] 是目录, 递归获取该目录下的文件", f.getPath().toString()));
                 getHDFSAllFilesNORegex(f.getPath().toString(), hdfs);
             } else if (f.isFile()) {
-
-                addSourceFileByType(f.getPath().toString());
+                if (f.getLen() == 0) {
+                    String message = String.format("文件[%s]长度为0，将会跳过不作处理！", f.getPath());
+                    LOG.warn(message);
+                } else {
+                    addSourceFileByType(f.getPath().toString());
+                }
             } else {
                 String message = String.format("该路径[%s]文件类型既不是目录也不是文件，插件自动忽略。",
                         f.getPath().toString());

@@ -94,7 +94,7 @@ public class JobContainer extends AbstractContainer {
      */
     @Override
     public void start() {
-        LOG.info("DataX jobContainer starts job.");
+        LOG.info("App jobContainer starts job.");
 
         boolean hasException = false;
         boolean isDryRun = false;
@@ -122,7 +122,7 @@ public class JobContainer extends AbstractContainer {
 
                 LOG.debug("jobContainer starts to do postHandle ...");
                 this.postHandle();
-                LOG.info("DataX jobId [{}] completed successfully.", this.jobId);
+                LOG.info("App jobId [{}] completed successfully.", this.jobId);
 
                 this.invokeHooks();
             }
@@ -266,7 +266,7 @@ public class JobContainer extends AbstractContainer {
     private void preCheckReader() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.READER, this.readerPluginName));
-        LOG.info(String.format("DataX Reader.Job [%s] do preCheck work .",
+        LOG.info(String.format("App Reader.Job [%s] do preCheck work .",
                 this.readerPluginName));
         this.jobReader.preCheck();
         classLoaderSwapper.restoreCurrentThreadClassLoader();
@@ -275,7 +275,7 @@ public class JobContainer extends AbstractContainer {
     private void preCheckWriter() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.WRITER, this.writerPluginName));
-        LOG.info(String.format("DataX Writer.Job [%s] do preCheck work .",
+        LOG.info(String.format("App Writer.Job [%s] do preCheck work .",
                 this.writerPluginName));
         this.jobWriter.preCheck();
         classLoaderSwapper.restoreCurrentThreadClassLoader();
@@ -710,7 +710,7 @@ public class JobContainer extends AbstractContainer {
     private void prepareJobReader() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.READER, this.readerPluginName));
-        LOG.info(String.format("DataX Reader.Job [%s] do prepare work .",
+        LOG.info(String.format("App Reader.Job [%s] do prepare work .",
                 this.readerPluginName));
         this.jobReader.prepare();
         classLoaderSwapper.restoreCurrentThreadClassLoader();
@@ -719,7 +719,7 @@ public class JobContainer extends AbstractContainer {
     private void prepareJobWriter() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.WRITER, this.writerPluginName));
-        LOG.info(String.format("DataX Writer.Job [%s] do prepare work .",
+        LOG.info(String.format("App Writer.Job [%s] do prepare work .",
                 this.writerPluginName));
         this.jobWriter.prepare();
         classLoaderSwapper.restoreCurrentThreadClassLoader();
@@ -736,7 +736,7 @@ public class JobContainer extends AbstractContainer {
                     FrameworkErrorCode.PLUGIN_SPLIT_ERROR,
                     "reader切分的task数目不能小于等于0");
         }
-        LOG.info("DataX Reader.Job [{}] splits to [{}] tasks.",
+        LOG.info("App Reader.Job [{}] splits to [{}] tasks.",
                 this.readerPluginName, readerSlicesConfigs.size());
         classLoaderSwapper.restoreCurrentThreadClassLoader();
         return readerSlicesConfigs;
@@ -753,7 +753,7 @@ public class JobContainer extends AbstractContainer {
                     FrameworkErrorCode.PLUGIN_SPLIT_ERROR,
                     "writer切分的task不能小于等于0");
         }
-        LOG.info("DataX Writer.Job [{}] splits to [{}] tasks.",
+        LOG.info("App Writer.Job [{}] splits to [{}] tasks.",
                 this.writerPluginName, writerSlicesConfigs.size());
         classLoaderSwapper.restoreCurrentThreadClassLoader();
 
@@ -939,7 +939,7 @@ public class JobContainer extends AbstractContainer {
     private void postJobReader() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.READER, this.readerPluginName));
-        LOG.info("DataX Reader.Job [{}] do post work.",
+        LOG.info("App Reader.Job [{}] do post work.",
                 this.readerPluginName);
         this.jobReader.post();
         classLoaderSwapper.restoreCurrentThreadClassLoader();
@@ -948,7 +948,7 @@ public class JobContainer extends AbstractContainer {
     private void postJobWriter() {
         classLoaderSwapper.setCurrentThreadClassLoader(LoadUtil.getJarLoader(
                 PluginType.WRITER, this.writerPluginName));
-        LOG.info("DataX Writer.Job [{}] do post work.",
+        LOG.info("App Writer.Job [{}] do post work.",
                 this.writerPluginName);
         this.jobWriter.post();
         classLoaderSwapper.restoreCurrentThreadClassLoader();

@@ -436,6 +436,7 @@ public class UnstructuredStorageReaderUtil {
 
 							break;
 						case DATE:
+						case TIMESTAMP:
 							try {
 								if (columnValue == null) {
 									Date date = null;
@@ -509,7 +510,7 @@ public class UnstructuredStorageReaderUtil {
 	}
 
 	private enum Type {
-		STRING, INT, LONG, BOOLEAN, DOUBLE, DATE, BIGINT, DECIMAL
+		STRING, INT, LONG, BOOLEAN, DOUBLE, DATE, TIMESTAMP, BIGINT, DECIMAL
 	}
 
 	/**

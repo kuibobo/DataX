@@ -612,7 +612,7 @@ public class AdsInsertProxy implements AdsProxy {
                         .asDataXException(
                                 DBUtilErrorCode.UNSUPPORTED_TYPE,
                                 String.format(
-                                        "您的配置文件中的列配置信息有误. 因为DataX 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%s], 字段Java类型:[%s]. 请修改表中该字段的类型或者不同步该字段.",
+                                        "您的配置文件中的列配置信息有误. 因为App 不支持数据库写入这种字段类型. 字段名:[%s], 字段类型:[%s], 字段Java类型:[%s]. 请修改表中该字段的类型或者不同步该字段.",
                                         columnName, columnMetaPair.getRight(), columnMetaPair.getLeft()));
         }
     }

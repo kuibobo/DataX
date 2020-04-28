@@ -53,10 +53,10 @@ public class GdbWriter extends Writer {
         
         @Override
         public void init() {
-			LOG.info("GDB datax plugin writer job init begin ...");
+			LOG.info("GDB App plugin writer job init begin ...");
 			this.jobConfig = getPluginJobConf();
 			GdbWriterConfig.of(this.jobConfig);
-			LOG.info("GDB datax plugin writer job init end.");
+			LOG.info("GDB App plugin writer job init end.");
 
             /**
              * 注意：此方法仅执行一次。

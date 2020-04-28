@@ -53,7 +53,7 @@ public class OtsReader extends Reader {
             LOG.info("split() begin ...");
 
             if (adviceNumber <= 0) {
-                throw DataXException.asDataXException(OtsReaderError.ERROR, "Datax input adviceNumber <= 0.");
+                throw DataXException.asDataXException(OtsReaderError.ERROR, "App input adviceNumber <= 0.");
             }
 
             List<Configuration> confs = null;
