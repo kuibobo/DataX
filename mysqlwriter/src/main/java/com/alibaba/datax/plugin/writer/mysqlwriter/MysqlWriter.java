@@ -12,7 +12,15 @@ import java.util.List;
 
 //TODO writeProxy
 public class MysqlWriter extends Writer {
-    private static final DataBaseType DATABASE_TYPE = DataBaseType.MySql;
+    private static DataBaseType DATABASE_TYPE = DataBaseType.MySql;
+
+    public static class Constant {
+        public static final String DEFAULT_DB_VERSION = "mysql";
+    }
+
+    public class MyKey {
+        public static final String DB_VERSION = "dbVersion";
+    }
 
     public static class Job extends Writer.Job {
         private Configuration originalConfig = null;
@@ -27,6 +35,11 @@ public class MysqlWriter extends Writer {
         @Override
         public void init() {
             this.originalConfig = super.getPluginJobConf();
+            String dbVersion = this.originalConfig.getString(MyKey.DB_VERSION, Constant.DEFAULT_DB_VERSION);
+            if (Constant.DEFAULT_DB_VERSION.equals(dbVersion))
+                DATABASE_TYPE = DataBaseType.MySql6;
+            else
+                DATABASE_TYPE = DataBaseType.MySql;
             this.commonRdbmsWriterJob = new CommonRdbmsWriter.Job(DATABASE_TYPE);
             this.commonRdbmsWriterJob.init(this.originalConfig);
         }

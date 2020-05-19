@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
  */
 public enum DataBaseType {
     MySql("mysql", "com.mysql.jdbc.Driver"),
+    MySql6("mysql6", "com.mysql.cj.jdbc.Driver"),
     Tddl("mysql", "com.mysql.jdbc.Driver"),
     DRDS("drds", "com.mysql.jdbc.Driver"),
     Oracle("oracle", "oracle.jdbc.OracleDriver"),
@@ -47,6 +48,8 @@ public enum DataBaseType {
                 } else {
                     result = jdbc + "?" + suffix;
                 }
+                break;
+            case MySql6:
                 break;
             case Oracle:
                 break;
