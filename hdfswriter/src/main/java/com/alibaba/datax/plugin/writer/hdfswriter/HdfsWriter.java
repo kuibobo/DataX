@@ -26,6 +26,7 @@ public class HdfsWriter extends Writer {
         private String path;
         private String fileType;
         private String fileName;
+        private String hadoopUser;
         private List<Configuration> columns;
         private String writeMode;
         private String fieldDelimiter;
@@ -143,6 +144,7 @@ public class HdfsWriter extends Writer {
                 throw DataXException.asDataXException(HdfsWriterErrorCode.ILLEGAL_VALUE,
                         String.format("不支持您配置的编码格式:[%s]", encoding), e);
             }
+            this.hadoopUser = this.writerSliceConfig.getString(Key.HADOOP_USER);
         }
 
         @Override
@@ -154,6 +156,8 @@ public class HdfsWriter extends Writer {
                             String.format("您配置的path: [%s] 不是一个合法的目录, 请您注意文件重名, 不合法目录名等情况.",
                                     path));
                 }
+                if (!StringUtils.isEmpty(this.hadoopUser))
+                    System.setProperty("HADOOP_USER_NAME", this.hadoopUser);
                 //根据writeMode对目录下文件进行处理
                 Path[] existFilePaths = hdfsHelper.hdfsDirList(path,fileName);
                 boolean isExistFile = false;
@@ -330,6 +334,7 @@ public class HdfsWriter extends Writer {
         private String defaultFS;
         private String fileType;
         private String fileName;
+        private String hadoopUser;
 
         private HdfsHelper hdfsHelper = null;
 
@@ -341,6 +346,7 @@ public class HdfsWriter extends Writer {
             this.fileType = this.writerSliceConfig.getString(Key.FILE_TYPE);
             //得当的已经是绝对路径，eg：hdfs://10.101.204.12:9000/user/hive/warehouse/writer.db/text/test.textfile
             this.fileName = this.writerSliceConfig.getString(Key.FILE_NAME);
+            this.hadoopUser = this.writerSliceConfig.getString(Key.HADOOP_USER);
 
             hdfsHelper = new HdfsHelper();
             hdfsHelper.getFileSystem(defaultFS, writerSliceConfig);
@@ -355,6 +361,9 @@ public class HdfsWriter extends Writer {
         public void startWrite(RecordReceiver lineReceiver) {
             LOG.info("begin do write...");
             LOG.info(String.format("write to file : [%s]", this.fileName));
+            if (!StringUtils.isEmpty(this.hadoopUser))
+                System.setProperty("HADOOP_USER_NAME", this.hadoopUser);
+
             if(fileType.equalsIgnoreCase("TEXT")){
                 //写TEXT FILE
                 hdfsHelper.textFileStartWrite(lineReceiver,this.writerSliceConfig, this.fileName,
