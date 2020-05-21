@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.reader.httpreader.utils;
+package com.alibaba.datax.plugin.reader.httprestreader.utils;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

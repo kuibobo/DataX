@@ -1,16 +1,16 @@
-package com.alibaba.datax.plugin.reader.httpreader;
+package com.alibaba.datax.plugin.reader.httprestreader;
 
 import com.alibaba.datax.common.plugin.RecordSender;
 import com.alibaba.datax.common.spi.Reader;
 import com.alibaba.datax.common.util.Configuration;
-import com.alibaba.datax.plugin.reader.httpreader.utils.JSONReader;
+import com.alibaba.datax.plugin.reader.httprestreader.utils.JSONReader2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpReader extends Reader {
+public class HttpRestReader extends Reader {
 
     public static class Job extends Reader.Job {
 
@@ -20,45 +20,19 @@ public class HttpReader extends Reader {
 
         private String url;
 
-        private String table;
+        private String listNode;
 
         @Override
         public void init() {
             this.originConfig = this.getPluginJobConf();
             this.url = originConfig.getString(Key.URL);
-            this.table = originConfig.getString(Key.TABLE);
+            this.listNode = originConfig.getString(Key.LIST_NODE);
 
             this.validateParameter();
         }
 
         private void validateParameter() {
 
-//            String encoding = this.originConfig
-//                    .getString(
-//                            com.alibaba.datax.plugin.unstructuredstorage.reader.Key.ENCODING,
-//                            com.alibaba.datax.plugin.unstructuredstorage.reader.Constant.DEFAULT_ENCODING);
-//            if (StringUtils.isBlank(encoding)) {
-//                this.originConfig
-//                        .set(com.alibaba.datax.plugin.unstructuredstorage.reader.Key.ENCODING,
-//                                com.alibaba.datax.plugin.unstructuredstorage.reader.Constant.DEFAULT_ENCODING);
-//            } else {
-//                try {
-//                    encoding = encoding.trim();
-//                    this.originConfig
-//                            .set(com.alibaba.datax.plugin.unstructuredstorage.reader.Key.ENCODING,
-//                                    encoding);
-//                    Charsets.toCharset(encoding);
-//                } catch (UnsupportedCharsetException uce) {
-//                    throw DataXException.asDataXException(
-//                            HttpReaderErrorCode.ILLEGAL_VALUE,
-//                            String.format("不支持您配置的编码格式 : [%s]", encoding), uce);
-//                } catch (Exception e) {
-//                    throw DataXException.asDataXException(
-//                            HttpReaderErrorCode.CONFIG_INVALID_EXCEPTION,
-//                            String.format("编码配置异常, 请联系我们: %s", e.getMessage()),
-//                            e);
-//                }
-//            }
         }
 
         @Override
@@ -72,7 +46,7 @@ public class HttpReader extends Reader {
 
             Configuration splitedConfig = this.originConfig.clone();
             splitedConfig.set(Constant.URL, this.url);
-            splitedConfig.set(Constant.TABLE, this.table);
+
             readerSplitConfigs.add(splitedConfig);
 
             return readerSplitConfigs;
@@ -107,12 +81,13 @@ public class HttpReader extends Reader {
 
         private Configuration readerSliceConfig;
         private String url;
-
+        private String listNode;
 
         @Override
         public void init() {
             this.readerSliceConfig = this.getPluginJobConf();
             this.url = this.readerSliceConfig.getString(Constant.URL);
+            this.listNode = this.readerSliceConfig.getString(Constant.LIST_NODE);
         }
 
         @Override
@@ -124,7 +99,7 @@ public class HttpReader extends Reader {
         public void startRead(RecordSender recordSender) {
             LOG.debug("start read source files...");
 
-            JSONReader.readFromUrl(url, this.readerSliceConfig, recordSender);
+            JSONReader2.readFromUrl2(url, listNode, readerSliceConfig, recordSender);
             recordSender.flush();
             LOG.debug("end read source files...");
         }

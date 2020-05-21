@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.reader.httpreader.utils;
+package com.alibaba.datax.plugin.reader.httprestreader.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;

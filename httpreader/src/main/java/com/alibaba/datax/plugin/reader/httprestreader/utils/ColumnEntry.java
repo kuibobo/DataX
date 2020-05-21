@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.reader.httpreader.utils;
+package com.alibaba.datax.plugin.reader.httprestreader.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

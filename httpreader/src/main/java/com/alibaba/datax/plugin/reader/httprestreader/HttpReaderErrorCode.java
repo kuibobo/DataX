@@ -1,4 +1,4 @@
-package com.alibaba.datax.plugin.reader.httpreader;
+package com.alibaba.datax.plugin.reader.httprestreader;
 
 import com.alibaba.datax.common.spi.ErrorCode;
 

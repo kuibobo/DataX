@@ -1,0 +1,14 @@
+{
+    "name": "httprestreader",
+    "parameter": {
+        "path": [],
+        "column": [
+            {
+                "index": 0,
+                "type": ""
+            }
+        ],
+        "fieldDelimiter": ",",
+        "encoding": "UTF-8"
+    }
+}
