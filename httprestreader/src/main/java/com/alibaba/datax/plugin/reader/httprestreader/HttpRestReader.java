@@ -18,15 +18,21 @@ public class HttpRestReader extends Reader {
 
         private Configuration originConfig = null;
 
+        private String table;
+
         private String url;
 
         private String listNode;
 
+        private String primaryKey;
+
         @Override
         public void init() {
             this.originConfig = this.getPluginJobConf();
+            this.table = originConfig.getString(Key.TABLE);
             this.url = originConfig.getString(Key.URL);
             this.listNode = originConfig.getString(Key.LIST_NODE);
+            this.primaryKey = originConfig.getString(Key.PRIMARYKEY);
 
             this.validateParameter();
         }
@@ -45,7 +51,10 @@ public class HttpRestReader extends Reader {
             List<Configuration> readerSplitConfigs = new ArrayList<Configuration>();
 
             Configuration splitedConfig = this.originConfig.clone();
+            splitedConfig.set(Constant.TABLE, this.table);
             splitedConfig.set(Constant.URL, this.url);
+            splitedConfig.set(Constant.LIST_NODE, this.listNode);
+            splitedConfig.set(Constant.PRIMARYKEY, this.primaryKey);
 
             readerSplitConfigs.add(splitedConfig);
 
@@ -80,14 +89,18 @@ public class HttpRestReader extends Reader {
         private static Logger LOG = LoggerFactory.getLogger(Task.class);
 
         private Configuration readerSliceConfig;
+        private String table;
         private String url;
         private String listNode;
+        private String primaryKey;
 
         @Override
         public void init() {
             this.readerSliceConfig = this.getPluginJobConf();
+            this.table = this.readerSliceConfig.getString(Constant.TABLE);
             this.url = this.readerSliceConfig.getString(Constant.URL);
             this.listNode = this.readerSliceConfig.getString(Constant.LIST_NODE);
+            this.primaryKey = this.readerSliceConfig.getString(Constant.PRIMARYKEY);
         }
 
         @Override
@@ -99,7 +112,7 @@ public class HttpRestReader extends Reader {
         public void startRead(RecordSender recordSender) {
             LOG.debug("start read source files...");
 
-            JSONReader2.readFromUrl2(url, listNode, readerSliceConfig, recordSender);
+            JSONReader2.readFromUrl(url, table, listNode, primaryKey, readerSliceConfig, recordSender);
             recordSender.flush();
             LOG.debug("end read source files...");
         }

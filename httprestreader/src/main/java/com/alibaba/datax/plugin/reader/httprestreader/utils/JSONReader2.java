@@ -14,8 +14,10 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JSONReader2 {
 
@@ -40,19 +42,62 @@ public class JSONReader2 {
         return result;
     }
 
-    public static void readFromUrl2(String url, String listNode,
+    public static void readFromUrl(String url, String table, String listNode, String primaryKey,
                                    Configuration readerSliceConfig, RecordSender recordSender) {
         WebClient client = new WebClient();
         JSONObject json = null;
         JSONArray jarr = null;
         List<ColumnEntry> columns = null;
+        String[] nodes = listNode.split("/");
+        String content = null;
 
-        json = client.getJSONObject(url);
-        jarr = json.getJSONArray(listNode);
+        content = client.getString(url);
+        if (nodes.length == 0 || StringUtils.isEmpty(listNode)) {
+            jarr = JSON.parseArray(content);
+        } else {
+            json = JSON.parseObject(content);
+            for(int i=0; i<nodes.length-1; i++)
+                json = json.getJSONObject(nodes[i]);
+
+            jarr = json.getJSONArray(nodes[nodes.length - 1]);
+        }
+
         columns = getListColumnEntry(readerSliceConfig, Key.COLUMN);
 
         for (int i = 0; i < jarr.size(); i++) {
-            transportOneRecord(recordSender, columns, jarr.getJSONObject(i));
+            if ("table_1".equals(table)) {
+                transportOneRecord(recordSender, columns, jarr.getJSONObject(i));
+            } else {
+                json = jarr.getJSONObject(i);
+                List<String> keys = json.keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+                int count = 1;
+                String curTable = null;
+
+                for(String key:keys) {
+                    String val = json.getString(key);
+                    JSONObject children = null;
+
+                    if (!org.apache.commons.lang.StringUtils.isEmpty(val)) {
+                        if (val.charAt(0) == '{') {
+                            children = JSON.parseObject(val);
+                        } else if (val.charAt(0) == '[') {
+                            JSONArray jsonArray = JSON.parseArray(val);
+                            if (jsonArray.size() != 0)
+                                try{ children = jsonArray.getJSONObject(0);} catch (Exception ex){}
+                        }
+                    }
+
+                    if (children != null) {
+                        curTable = "table_" + (++count);
+                        if (curTable.equals(table)) {
+                            if (!StringUtils.isEmpty(primaryKey)) {
+                                children.put(primaryKey + "_parent_id", json.getString(primaryKey));
+                            }
+                            transportOneRecord(recordSender, columns, children);
+                        }
+                    }
+                }
+            }
         }
 
     }
