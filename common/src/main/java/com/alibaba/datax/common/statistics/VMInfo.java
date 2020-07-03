@@ -8,6 +8,8 @@ import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,8 @@ public class VMInfo {
     private final String osInfo;
     private final String jvmInfo;
 
+    private final String host;
+
     /**
      * cpu个数
      */
@@ -69,8 +73,7 @@ public class VMInfo {
     //nano
     private long lastProcessCpuTime = 0;
 
-
-    private VMInfo() {
+    private VMInfo() throws UnknownHostException {
         //初始化静态信息
         osMXBean = java.lang.management.ManagementFactory.getOperatingSystemMXBean();
         runtimeMXBean = java.lang.management.ManagementFactory.getRuntimeMXBean();
@@ -79,6 +82,7 @@ public class VMInfo {
 
         osInfo = runtimeMXBean.getVmVendor() + " " + runtimeMXBean.getSpecVersion() + " " + runtimeMXBean.getVmVersion();
         jvmInfo = osMXBean.getName() + " " + osMXBean.getArch() + " " + osMXBean.getVersion();
+        host = InetAddress.getLocalHost().getHostAddress();
         totalProcessorCount = osMXBean.getAvailableProcessors();
 
         //构建startPhyOSStatus
@@ -116,7 +120,8 @@ public class VMInfo {
         return "the machine info  => \n\n"
                 + "\tosInfo:\t" + osInfo + "\n"
                 + "\tjvmInfo:\t" + jvmInfo + "\n"
-                + "\tcpu num:\t" + totalProcessorCount + "\n\n"
+                + "\tcpu num:\t" + totalProcessorCount + "\n"
+                + "\thost:\t" + host + "\n\n"
                 + startPhyOSStatus.toString() + "\n"
                 + processGCStatus.toString() + "\n"
                 + processMomoryStatus.toString() + "\n";
