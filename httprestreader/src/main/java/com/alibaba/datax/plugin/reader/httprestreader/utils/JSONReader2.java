@@ -75,25 +75,33 @@ public class JSONReader2 {
 
                 for(String key:keys) {
                     String val = json.getString(key);
-                    JSONObject children = null;
+                    JSONArray childrens = null;
 
                     if (!org.apache.commons.lang.StringUtils.isEmpty(val)) {
                         if (val.charAt(0) == '{') {
-                            children = JSON.parseObject(val);
+                            JSONObject children = json.getJSONObject(key);// JSON.parseObject(val);
+
+                            childrens = new JSONArray();
+                            childrens.add(children);
                         } else if (val.charAt(0) == '[') {
-                            JSONArray jsonArray = JSON.parseArray(val);
+                            JSONArray jsonArray = json.getJSONArray(key);// JSON.parseArray(val);
                             if (jsonArray.size() != 0)
-                                try{ children = jsonArray.getJSONObject(0);} catch (Exception ex){}
+                                childrens = jsonArray;
                         }
                     }
 
-                    if (children != null) {
+                    if (childrens != null && childrens.size() != 0) {
                         curTable = "table_" + (++count);
                         if (curTable.equals(table)) {
-                            if (!StringUtils.isEmpty(primaryKey)) {
-                                children.put(primaryKey + "_parent_id", json.getString(primaryKey));
+                            for(int j=0; j<childrens.size(); j++) {
+                                JSONObject children = childrens.getJSONObject(j);
+
+                                if (!StringUtils.isEmpty(primaryKey)) {
+                                    children.put(primaryKey + "_parent_id", json.getString(primaryKey));
+                                }
+                                transportOneRecord(recordSender, columns, children);
                             }
-                            transportOneRecord(recordSender, columns, children);
+
                         }
                     }
                 }
