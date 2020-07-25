@@ -15,12 +15,14 @@ import org.bson.types.ObjectId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by jianying.wcj on 2015/3/19 0019.
  * Modified by mingyan.zc on 2016/6/13.
  * Modified by mingyan.zc on 2017/7/5.
  */
+@Slf4j
 public class CollectionSplitUtil {
 
     public static List<Configuration> doSplit(
@@ -98,6 +100,7 @@ public class CollectionSplitUtil {
                 .append("keyPattern", new Document(KeyConstant.MONGO_PRIMARY_ID, 1))
                 .append("force", true));
         } catch (MongoCommandException e) {
+            log.error("database runcommand error:{}", e);
             if (e.getErrorCode() == KeyConstant.MONGO_UNAUTHORIZED_ERR_CODE ||
                 e.getErrorCode() == KeyConstant.MONGO_ILLEGALOP_ERR_CODE) {
                 supportSplitVector = false;
