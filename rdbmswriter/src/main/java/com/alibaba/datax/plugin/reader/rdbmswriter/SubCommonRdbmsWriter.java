@@ -142,7 +142,7 @@ public class SubCommonRdbmsWriter extends CommonRdbmsWriter {
                 case Types.BIT:
                     if (null == column.getRawData()) {
                         preparedStatement.setObject(columnIndex + 1, null);
-                    } else if (this.dataBaseType == DataBaseType.MySql) {
+                    } else if (this.dataBaseType == DataBaseType.MySql || this.dataBaseType == DataBaseType.MySql6) {
                         preparedStatement.setBoolean(columnIndex + 1,
                                 column.asBoolean());
                     } else {
