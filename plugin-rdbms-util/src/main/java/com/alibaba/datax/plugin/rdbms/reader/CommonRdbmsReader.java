@@ -246,6 +246,7 @@ public class CommonRdbmsReader {
                 for (int i = 1; i <= columnNumber; i++) {
                     switch (metaData.getColumnType(i)) {
 
+                    case Types.OTHER:
                     case Types.ROWID://oracle rowid
                     case Types.STRUCT: // oracle st_geometry 类型
                     case -157: // sqlserver Geometry类型
@@ -335,7 +336,7 @@ public class CommonRdbmsReader {
                                 .asDataXException(
                                         DBUtilErrorCode.UNSUPPORTED_TYPE,
                                         String.format(
-                                                "您的配置文件中的列配置信息有误. 因为App 不支持数据库读取这种字段类型. 字段名:[%s], 字段名称:[%s], 字段Java类型:[%s]. 请尝试使用数据库函数将其转换datax支持的类型 或者不同步该字段 .",
+                                                "您的配置文件中的列配置信息有误. 因为App 不支持数据库读取这种字段类型. 字段名:[%s], 字段类型:[%s], 字段Java类型:[%s]. 请尝试使用数据库函数将其转换datax支持的类型 或者不同步该字段 .",
                                                 metaData.getColumnName(i),
                                                 metaData.getColumnType(i),
                                                 metaData.getColumnClassName(i)));
