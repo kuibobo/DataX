@@ -68,6 +68,7 @@
         <module>cassandrareader</module>
         <module>kingbasereader</module>
         <module>httpreader</module>
+        <module>gdbreader</module>
 
         <!-- writer -->
         <module>mysqlwriter</module>
@@ -97,7 +98,8 @@
         <module>cassandrawriter</module>
         <module>kingbasewriter</module>
         <module>kafkawriter</module>
-        
+        <module>clickhousewriter</module>
+
         <!-- common support module -->
         <module>plugin-rdbms-util</module>
         <module>plugin-unstructured-storage-util</module>
