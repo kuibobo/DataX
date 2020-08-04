@@ -42,7 +42,7 @@ public class JSONReader2 {
         return result;
     }
 
-    public static void readFromUrl(String url, String table, String listNode, String primaryKey,
+    public static void readFromUrl(String url, List<JSONObject> postParams, String contentType, String table, String listNode, String primaryKey,
                                    Configuration readerSliceConfig, RecordSender recordSender) {
         WebClient client = new WebClient();
         JSONObject json = null;
@@ -51,64 +51,71 @@ public class JSONReader2 {
         String[] nodes = listNode.split("/");
         String content = null;
 
-        content = client.getString(url);
-        if (nodes.length == 0 || StringUtils.isEmpty(listNode)) {
-            jarr = JSON.parseArray(content);
-        } else {
-            json = JSON.parseObject(content);
-            for(int i=0; i<nodes.length-1; i++)
-                json = json.getJSONObject(nodes[i]);
+        client.addHead("content-type", contentType);
+        for (int idx = 0; idx < postParams.size(); idx++) {
+            JSONObject param = postParams.get(idx);
+            content = client.post2(url, param.toJSONString());
 
-            jarr = json.getJSONArray(nodes[nodes.length - 1]);
-        }
-
-        columns = getListColumnEntry(readerSliceConfig, Key.COLUMN);
-
-        for (int i = 0; i < jarr.size(); i++) {
-            if ("table_1".equals(table)) {
-                transportOneRecord(recordSender, columns, jarr.getJSONObject(i));
+            if (nodes.length == 0 || StringUtils.isEmpty(listNode)) {
+                jarr = JSON.parseArray(content);
             } else {
-                json = jarr.getJSONObject(i);
-                List<String> keys = json.keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-                int count = 1;
-                String curTable = null;
+                json = JSON.parseObject(content);
+                for (int i = 0; i < nodes.length - 1; i++)
+                    json = json.getJSONObject(nodes[i]);
 
-                for(String key:keys) {
-                    String val = json.getString(key);
-                    JSONArray childrens = null;
+                jarr = json.getJSONArray(nodes[nodes.length - 1]);
+            }
+            if (jarr == null) {
+                continue;
+            }
+            columns = getListColumnEntry(readerSliceConfig, Key.COLUMN);
 
-                    if (!org.apache.commons.lang.StringUtils.isEmpty(val)) {
-                        if (val.charAt(0) == '{') {
-                            JSONObject children = json.getJSONObject(key);// JSON.parseObject(val);
+            for (int i = 0; i < jarr.size(); i++) {
+                if ("table_1".equals(table)) {
+                    transportOneRecord(recordSender, columns, jarr.getJSONObject(i));
+                } else {
+                    json = jarr.getJSONObject(i);
+                    List<String> keys = json.keySet().stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+                    int count = 1;
+                    String curTable = null;
 
-                            childrens = new JSONArray();
-                            childrens.add(children);
-                        } else if (val.charAt(0) == '[') {
-                            JSONArray jsonArray = json.getJSONArray(key);// JSON.parseArray(val);
-                            if (jsonArray.size() != 0)
-                                childrens = jsonArray;
-                        }
-                    }
+                    for(String key:keys) {
+                        String val = json.getString(key);
+                        JSONArray childrens = null;
 
-                    if (childrens != null && childrens.size() != 0) {
-                        curTable = "table_" + (++count);
-                        if (curTable.equals(table)) {
-                            for(int j=0; j<childrens.size(); j++) {
-                                JSONObject children = childrens.getJSONObject(j);
+                        if (!org.apache.commons.lang.StringUtils.isEmpty(val)) {
+                            if (val.charAt(0) == '{') {
+                                JSONObject children = json.getJSONObject(key);// JSON.parseObject(val);
 
-                                if (!StringUtils.isEmpty(primaryKey)) {
-                                    children.put(primaryKey + "_parent_id", json.getString(primaryKey));
-                                }
-                                transportOneRecord(recordSender, columns, children);
+                                childrens = new JSONArray();
+                                childrens.add(children);
+                            } else if (val.charAt(0) == '[') {
+                                JSONArray jsonArray = json.getJSONArray(key);// JSON.parseArray(val);
+                                if (jsonArray.size() != 0)
+                                    childrens = jsonArray;
                             }
+                        }
 
+                        if (childrens != null && childrens.size() != 0) {
+                            curTable = "table_" + (++count);
+                            if (curTable.equals(table)) {
+                                for(int j=0; j<childrens.size(); j++) {
+                                    JSONObject children = childrens.getJSONObject(j);
+
+                                    if (!StringUtils.isEmpty(primaryKey)) {
+                                        children.put(primaryKey + "_parent_id", json.getString(primaryKey));
+                                    }
+                                    transportOneRecord(recordSender, columns, children);
+                                }
+
+                            }
                         }
                     }
                 }
             }
         }
-
     }
+
 
     public static void transportOneRecord(RecordSender recordSender, List<ColumnEntry> columns,
                                           JSONObject json) {

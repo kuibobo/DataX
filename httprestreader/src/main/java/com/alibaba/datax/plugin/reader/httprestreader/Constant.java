@@ -8,4 +8,8 @@ public class Constant {
     public static final String LIST_NODE = "listNode";
 
     public static final String PRIMARYKEY = "primarykey";
+
+    public static final String POST_PARAMS = "postParams";
+
+    public static final String CONTENT_TYPE = "contentType";
 }
