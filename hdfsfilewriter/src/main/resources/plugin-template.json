@@ -1,5 +1,5 @@
 {
-  "name": "httprestreader",
+  "name": "hdfsfilewriter",
   "parameter": {
     "path": [
       ""
