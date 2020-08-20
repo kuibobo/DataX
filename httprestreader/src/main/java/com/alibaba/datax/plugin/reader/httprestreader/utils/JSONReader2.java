@@ -1,5 +1,7 @@
 package com.alibaba.datax.plugin.reader.httprestreader.utils;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
 import com.alibaba.datax.common.element.*;
 import com.alibaba.datax.common.exception.DataXException;
 import com.alibaba.datax.common.plugin.RecordSender;
@@ -44,17 +46,18 @@ public class JSONReader2 {
 
     public static void readFromUrl(String url, List<JSONObject> postParams, String contentType, String table, String listNode, String primaryKey,
                                    Configuration readerSliceConfig, RecordSender recordSender) {
-        WebClient client = new WebClient();
         JSONObject json = null;
         JSONArray jarr = null;
         List<ColumnEntry> columns = null;
         String[] nodes = listNode.split("/");
         String content = null;
 
-        client.addHead("content-type", contentType);
         for (int idx = 0; idx < postParams.size(); idx++) {
             JSONObject param = postParams.get(idx);
-            content = client.post2(url, param.toJSONString());
+            content = HttpUtil.createPost(url).body(param.toJSONString(), contentType).execute().body();
+
+            if (StringUtils.isEmpty(content))
+                continue;
 
             if (nodes.length == 0 || StringUtils.isEmpty(listNode)) {
                 jarr = JSON.parseArray(content);
@@ -68,6 +71,7 @@ public class JSONReader2 {
             if (jarr == null) {
                 continue;
             }
+            LOG.info("parse [{}] param response content", idx);
             columns = getListColumnEntry(readerSliceConfig, Key.COLUMN);
 
             for (int i = 0; i < jarr.size(); i++) {

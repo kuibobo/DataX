@@ -28,7 +28,7 @@ public class HttpRestReader extends Reader {
 
         private String primaryKey;
 
-        private List<JSONObject> postParams;
+        private List<List<JSONObject>> postParams;
 
         private String contentType;
 
@@ -44,6 +44,7 @@ public class HttpRestReader extends Reader {
             this.postParams = (List) originConfig.getList(Key.POST_PARAMS);
             this.contentType = originConfig.getString(Key.CONTENT_TYPE);
 
+            this.originConfig.remove(Key.POST_PARAMS);
             this.validateParameter();
         }
 
@@ -60,15 +61,19 @@ public class HttpRestReader extends Reader {
             LOG.debug("split() begin...");
             List<Configuration> readerSplitConfigs = new ArrayList<Configuration>();
 
-            Configuration splitedConfig = this.originConfig.clone();
-            splitedConfig.set(Constant.TABLE, this.table);
-            splitedConfig.set(Constant.URL, this.url);
-            splitedConfig.set(Constant.LIST_NODE, this.listNode);
-            splitedConfig.set(Constant.PRIMARYKEY, this.primaryKey);
-            splitedConfig.set(Constant.POST_PARAMS, this.postParams);
-            splitedConfig.set(Constant.CONTENT_TYPE, this.contentType);
+            for (int i = 0; i < this.postParams.size(); i++) {
+                List<JSONObject> params = this.postParams.get(i);
 
-            readerSplitConfigs.add(splitedConfig);
+                Configuration splitedConfig = this.originConfig.clone();
+                splitedConfig.set(Constant.TABLE, this.table);
+                splitedConfig.set(Constant.URL, this.url);
+                splitedConfig.set(Constant.LIST_NODE, this.listNode);
+                splitedConfig.set(Constant.PRIMARYKEY, this.primaryKey);
+                splitedConfig.set(Constant.POST_PARAMS, params);
+                splitedConfig.set(Constant.CONTENT_TYPE, this.contentType);
+
+                readerSplitConfigs.add(splitedConfig);
+            }
 
             return readerSplitConfigs;
         }
@@ -123,14 +128,13 @@ public class HttpRestReader extends Reader {
         public void prepare() {
         }
 
-        @lombok.SneakyThrows
         @Override
         public void startRead(RecordSender recordSender) {
-            LOG.debug("start read source files...");
+            LOG.info("start read source files...");
 
             JSONReader2.readFromUrl(url, postParams, contentType, table, listNode, primaryKey, readerSliceConfig, recordSender);
-            recordSender.flush();
-            LOG.debug("end read source files...");
+
+            LOG.info("end read source files...");
         }
 
         @Override
