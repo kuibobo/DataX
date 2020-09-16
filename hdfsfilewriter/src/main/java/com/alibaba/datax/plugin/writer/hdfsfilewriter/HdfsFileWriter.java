@@ -195,7 +195,7 @@ public class HdfsFileWriter extends Writer {
         private String fileName;
         private String hadoopUser;
 
-        private static HdfsHelper hdfsHelper = null;
+        private HdfsHelper hdfsHelper = null;
 
         @Override
         public void init() {
@@ -205,10 +205,8 @@ public class HdfsFileWriter extends Writer {
             this.hadoopUser = this.writerSliceConfig.getString(Key.HADOOP_USER);
             this.fileName = this.writerSliceConfig.getString(Key.FILE_NAME);
 
-            if (hdfsHelper == null) {
-                hdfsHelper = new HdfsHelper();
-                hdfsHelper.getFileSystem(defaultFS, writerSliceConfig);
-            }
+            this.hdfsHelper = new HdfsHelper();
+            this.hdfsHelper.getFileSystem(defaultFS, writerSliceConfig);
         }
 
         @Override

@@ -66,7 +66,13 @@ public class JSONReader2 {
                 for (int i = 0; i < nodes.length - 1; i++)
                     json = json.getJSONObject(nodes[i]);
 
-                jarr = json.getJSONArray(nodes[nodes.length - 1]);
+                Object jobj = json.get(nodes[nodes.length - 1]);
+                if (jobj instanceof JSONArray) {
+                    jarr = (JSONArray) jobj;
+                } else {
+                    jarr = new JSONArray();
+                    jarr.add(jobj);
+                }
             }
             if (jarr == null) {
                 continue;

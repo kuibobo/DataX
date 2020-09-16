@@ -383,10 +383,14 @@ public class UnstructuredStorageReaderUtil {
 
 					if (null != columnIndex) {
 						if (columnIndex >= sourceLine.length) {
-							String message = String
+							/*String message = String
 									.format("您尝试读取的列越界,源文件该行有 [%s] 列,您尝试读取第 [%s] 列, 数据详情[%s]",
 											sourceLine.length, columnIndex + 1,
-											StringUtils.join(sourceLine, ","));
+											StringUtils.join(sourceLine, ","));*/
+							// 不显示详情，因为 String.format -> StringBuilder.append 会出现 Java heap space
+							String message = String
+									.format("您尝试读取的列越界,源文件该行有 [%s] 列,您尝试读取第 [%s] 列",
+											sourceLine.length, columnIndex + 1);
 							LOG.warn(message);
 							throw new IndexOutOfBoundsException(message);
 						}
