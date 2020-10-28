@@ -273,7 +273,6 @@ public class CommonRdbmsWriter {
             try {
                 Record record;
                 while ((record = recordReceiver.getFromReader()) != null) {
-                    LOG.info("start");
                     if (record.getColumnNumber() != this.columnNumber) {
                         // 源头读取字段列数与目的表字段写入列数不相等，直接报错
                         throw DataXException
@@ -531,7 +530,7 @@ public class CommonRdbmsWriter {
                 // warn: bit(1) -> Types.BIT 可使用setBoolean
                 // warn: bit(>1) -> Types.VARBINARY 可使用setBytes
                 case Types.BIT:
-                    if (this.dataBaseType == DataBaseType.MySql || this.dataBaseType == DataBaseType.MySql6) {
+                    if (this.dataBaseType == DataBaseType.MySql) {
                         preparedStatement.setBoolean(columnIndex + 1, column.asBoolean());
                     } else {
                         preparedStatement.setString(columnIndex + 1, column.asString());

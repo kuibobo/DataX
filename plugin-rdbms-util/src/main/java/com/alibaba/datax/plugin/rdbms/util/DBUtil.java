@@ -387,6 +387,7 @@ public final class DBUtil {
     private static synchronized Connection connect(DataBaseType dataBaseType,
                                                    String url, Properties prop) {
         try {
+            LOG.info("connect logintimout:" + Constant.TIMEOUT_SECONDS);
             Class.forName(dataBaseType.getDriverClassName());
             DriverManager.setLoginTimeout(Constant.TIMEOUT_SECONDS);
             return DriverManager.getConnection(url, prop);
@@ -551,13 +552,14 @@ public final class DBUtil {
             Connection conn, String tableName, String column) {
         Statement statement = null;
         ResultSet rs = null;
+        String queryColumnSql = null;
 
         Triple<List<String>, List<Integer>, List<String>> columnMetaData = new ImmutableTriple<List<String>, List<Integer>, List<String>>(
                 new ArrayList<String>(), new ArrayList<Integer>(),
                 new ArrayList<String>());
         try {
             statement = conn.createStatement();
-            String queryColumnSql = "select " + column + " from " + tableName
+            queryColumnSql = "select " + column + " from " + tableName
                     + " where 1=2";
 
             rs = statement.executeQuery(queryColumnSql);
@@ -574,7 +576,7 @@ public final class DBUtil {
         } catch (SQLException e) {
             throw DataXException
                     .asDataXException(DBUtilErrorCode.GET_COLUMN_INFO_FAILED,
-                            String.format("获取表:%s 的字段的元信息时失败. 请联系 DBA 核查该库、表信息.", tableName), e);
+                            String.format("获取表:%s 的字段的元信息时失败. SQL:%s, 请联系 DBA 核查该库、表信息.", tableName, queryColumnSql), e);
         } finally {
             DBUtil.closeDBResources(rs, statement, null);
         }

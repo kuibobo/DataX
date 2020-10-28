@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
  */
 public enum DataBaseType {
     MySql("mysql", "com.mysql.jdbc.Driver"),
-    MySql6("mysql6", "com.mysql.cj.jdbc.Driver"),
     Tddl("mysql", "com.mysql.jdbc.Driver"),
     DRDS("drds", "com.mysql.jdbc.Driver"),
     Oracle("oracle", "oracle.jdbc.OracleDriver"),
@@ -43,14 +42,12 @@ public enum DataBaseType {
         switch (this) {
             case MySql:
             case DRDS:
-                suffix = "yearIsDateType=false&zeroDateTimeBehavior=convertToNull&tinyInt1isBit=false&rewriteBatchedStatements=true";
+                suffix = "yearIsDateType=false&zeroDateTimeBehavior=CONVERT_TO_NULL&tinyInt1isBit=false&rewriteBatchedStatements=true";
                 if (jdbc.contains("?")) {
                     result = jdbc + "&" + suffix;
                 } else {
                     result = jdbc + "?" + suffix;
                 }
-                break;
-            case MySql6:
                 break;
             case Oracle:
                 break;
