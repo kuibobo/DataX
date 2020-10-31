@@ -439,6 +439,7 @@ public class DFSUtil {
 
                             break;
                         case DATE:
+                        case TIMESTAMP:
                             try {
                                 if (columnValue == null) {
                                     columnGenerated = new DateColumn((Date) null);
@@ -522,7 +523,7 @@ public class DFSUtil {
     }
 
     private enum Type {
-        STRING, LONG, BOOLEAN, DOUBLE, DATE, DECIMAL, FLOAT, BIGINT, INT
+        STRING, LONG, BOOLEAN, DOUBLE, DATE, TIMESTAMP, DECIMAL, FLOAT, BIGINT, INT
     }
 
     public boolean checkHdfsFileType(String filepath, String specifiedFileType) {
