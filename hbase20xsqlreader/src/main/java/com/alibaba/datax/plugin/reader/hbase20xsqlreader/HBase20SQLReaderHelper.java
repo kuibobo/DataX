@@ -203,7 +203,7 @@ public class HBase20SQLReaderHelper {
                             adviceNumber, splitKey);
                 } else {
                     throw DataXException.asDataXException(HBase20xSQLReaderErrorCode.ILLEGAL_SPLIT_PK,
-                            "您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. " +
+                            "您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. " +
                                     "请尝试使用其他的切分主键或者联系HBase管理员进行处理.");
                 }
 
@@ -352,13 +352,13 @@ public class HBase20SQLReaderHelper {
                     }
                 } else {
                     throw DataXException.asDataXException(HBase20xSQLReaderErrorCode.ILLEGAL_SPLIT_PK,
-                            "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. " +
-                                    "App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系HBASE管理员进行处理.");
+                            "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. " +
+                                    "DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系HBASE管理员进行处理.");
                 }
             } else {
                 throw DataXException.asDataXException(HBase20xSQLReaderErrorCode.ILLEGAL_SPLIT_PK,
-                        "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. " +
-                                "App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系HBASE管理员进行处理.");
+                        "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. " +
+                                "DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系HBASE管理员进行处理.");
             }
         } catch (SQLException e) {
             throw DataXException.asDataXException(HBase20xSQLReaderErrorCode.ILLEGAL_SPLIT_PK, e);

@@ -5,7 +5,7 @@ import com.alibaba.datax.common.spi.ErrorCode;
 public enum OdpsWriterErrorCode implements ErrorCode {
     REQUIRED_VALUE("OdpsWriter-00", "您缺失了必须填写的参数值."),
     ILLEGAL_VALUE("OdpsWriter-01", "您配置的值不合法."),
-    UNSUPPORTED_COLUMN_TYPE("OdpsWriter-02", "App 不支持写入 ODPS 的目的表的此种数据类型."),
+    UNSUPPORTED_COLUMN_TYPE("OdpsWriter-02", "DataX 不支持写入 ODPS 的目的表的此种数据类型."),
 
     TABLE_TRUNCATE_ERROR("OdpsWriter-03", "清空 ODPS 目的表时出错."),
     CREATE_MASTER_UPLOAD_FAIL("OdpsWriter-04", "创建 ODPS 的 uploadSession 失败."),

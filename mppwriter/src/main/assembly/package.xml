@@ -14,21 +14,21 @@
                 <include>plugin.json</include>
                 <include>plugin_job_template.json</include>
             </includes>
-            <outputDirectory>plugin/writer/postgresqlwriter</outputDirectory>
+            <outputDirectory>plugin/writer/mppwriter</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/</directory>
             <includes>
-                <include>postgresqlwriter-0.0.1-SNAPSHOT.jar</include>
+                <include>mppwriter-0.0.1-SNAPSHOT.jar</include>
             </includes>
-            <outputDirectory>plugin/writer/postgresqlwriter</outputDirectory>
+            <outputDirectory>plugin/writer/mppwriter</outputDirectory>
         </fileSet>
     </fileSets>
 
     <dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
-            <outputDirectory>plugin/writer/postgresqlwriter/libs</outputDirectory>
+            <outputDirectory>plugin/writer/mppwriter/libs</outputDirectory>
             <scope>runtime</scope>
         </dependencySet>
     </dependencySets>

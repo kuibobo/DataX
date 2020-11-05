@@ -29,7 +29,7 @@ public enum OdpsReaderErrorCode implements ErrorCode {
 
     ACCOUNT_TYPE_ERROR("OdpsReader-31", "odps 账号类型错误."),
 
-    VIRTUAL_VIEW_NOT_SUPPORT("OdpsReader-32", "App 不支持 读取虚拟视图."),
+    VIRTUAL_VIEW_NOT_SUPPORT("OdpsReader-32", "DataX 不支持 读取虚拟视图."),
 
     PARTITION_ERROR("OdpsReader-33", "分区配置错误."),
 

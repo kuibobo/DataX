@@ -50,7 +50,7 @@ public class SingleTableSplitUtil {
             Pair<Object, Object> minMaxPK = getPkRange(configuration);
             if (null == minMaxPK) {
                 throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                        "根据切分主键切分表失败. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                        "根据切分主键切分表失败. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
             }
 
             configuration.set(Key.QUERY_SQL, buildQuerySql(column, table, where));
@@ -78,7 +78,7 @@ public class SingleTableSplitUtil {
                         adviceNum, splitPkName);
             } else {
                 throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                        "您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                        "您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
             }
         }
         String tempQuerySql;
@@ -159,7 +159,7 @@ public class SingleTableSplitUtil {
         Pair<Object, Object> minMaxPK = checkSplitPk(conn, pkRangeSQL, fetchSize, table, username, null);
         if (null == minMaxPK) {
             throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                    "根据切分主键切分表失败. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                    "根据切分主键切分表失败. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
         }
     }
 
@@ -203,16 +203,16 @@ public class SingleTableSplitUtil {
                         String minMax = rs.getString(1) + rs.getString(2);
                         if (StringUtils.contains(minMax, '.')) {
                             throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                                    "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                                    "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
                         }
                     }
                 } else {
                     throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                            "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                            "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
                 }
             } else {
                 throw DataXException.asDataXException(DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                        "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                        "您配置的App切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
             }
         } catch(DataXException e) {
             throw e;
@@ -382,7 +382,7 @@ public class SingleTableSplitUtil {
                 throw DataXException
                         .asDataXException(
                                 DBUtilErrorCode.ILLEGAL_SPLIT_PK,
-                                "您配置的DataX切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 App 不支持. App 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
+                                "您配置的DataX切分主键(splitPk)有误. 因为您配置的切分主键(splitPk) 类型 DataX 不支持. DataX 仅支持切分主键为一个,并且类型为整数或者字符串类型. 请尝试使用其他的切分主键或者联系 DBA 进行处理.");
             }
         }
         return rangeSql;

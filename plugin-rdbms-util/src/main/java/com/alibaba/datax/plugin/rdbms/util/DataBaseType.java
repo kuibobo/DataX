@@ -21,7 +21,8 @@ public enum DataBaseType {
     DB2("db2", "com.ibm.db2.jcc.DB2Driver"),
     ADS("ads","com.mysql.jdbc.Driver"),
     KingBase("kingbase", "com.kingbase.Driver"),
-    ClickHouse("clickhouse", "ru.yandex.clickhouse.ClickHouseDriver");
+    ClickHouse("clickhouse", "ru.yandex.clickhouse.ClickHouseDriver"),
+    KingbaseES("kingbasees", "com.kingbase8.Driver");
 
 
     private String typeName;
@@ -64,6 +65,8 @@ public enum DataBaseType {
                 break;
             case KingBase:
                 break;
+            case KingbaseES:
+                break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
         }
@@ -105,6 +108,8 @@ public enum DataBaseType {
                 break;
             case KingBase:
                 break;
+            case KingbaseES:
+                break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type.");
         }
@@ -129,6 +134,7 @@ public enum DataBaseType {
                 break;
             case DB2:
             case PostgreSQL:
+            case KingbaseES:
             	break;
             case KingBase:
                 break;
@@ -153,8 +159,12 @@ public enum DataBaseType {
                 result = "[" + columnName + "]";
                 break;
             case DB2:
+                break;
             case PostgreSQL:
+                break;
             case KingBase:
+                break;
+            case KingbaseES:
                 break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type");
@@ -178,6 +188,8 @@ public enum DataBaseType {
                 break;
             case PostgreSQL:
             case KingBase:
+                break;
+            case KingbaseES:
                 break;
             default:
                 throw DataXException.asDataXException(DBUtilErrorCode.UNSUPPORTED_TYPE, "unsupported database type");

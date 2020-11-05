@@ -438,8 +438,8 @@ public class OdpsUtil {
             type = column.getType();
             if (type == OdpsType.ARRAY || type == OdpsType.MAP) {
                 throw DataXException.asDataXException(OdpsWriterErrorCode.UNSUPPORTED_COLUMN_TYPE,
-                        String.format("App 写入 ODPS 表不支持该字段类型:[%s]. 目前支持抽取的字段类型有：bigint, boolean, datetime, double, string. " +
-                                        "您可以选择不抽取 App 不支持的字段或者联系 ODPS 管理员寻求帮助.",
+                        String.format("DataX 写入 ODPS 表不支持该字段类型:[%s]. 目前支持抽取的字段类型有：bigint, boolean, datetime, double, string. " +
+                                        "您可以选择不抽取 DataX 不支持的字段或者联系 ODPS 管理员寻求帮助.",
                                 type));
             }
         }

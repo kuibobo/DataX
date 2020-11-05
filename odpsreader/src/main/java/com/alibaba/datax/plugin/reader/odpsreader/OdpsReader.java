@@ -69,7 +69,7 @@ public class OdpsReader extends Reader {
             boolean isVirtualView = this.table.isVirtualView();
             if (isVirtualView) {
                 throw DataXException.asDataXException(OdpsReaderErrorCode.VIRTUAL_VIEW_NOT_SUPPORT,
-                        String.format("源头表:%s 是虚拟视图，App 不支持读取虚拟视图.", tableName));
+                        String.format("源头表:%s 是虚拟视图，DataX 不支持读取虚拟视图.", tableName));
             }
 
             this.dealPartition(this.table);
@@ -177,7 +177,7 @@ public class OdpsReader extends Reader {
                 comparedPartitionDepth = comparedPartition.split(",").length;
                 if (comparedPartitionDepth != firstPartitionDepth) {
                     throw DataXException.asDataXException(OdpsReaderErrorCode.PARTITION_ERROR,
-                            String.format("分区配置错误, 您所配置的分区级数和该表的实际情况不一致, 比如分区:[%s] 是 %s 级分区, 而分区:[%s] 是 %s 级分区. App 是通过英文逗号判断您所配置的分区级数的. 正确的格式形如\"pt=${bizdate}, type=0\" ，请您参考示例修改该配置项. ",
+                            String.format("分区配置错误, 您所配置的分区级数和该表的实际情况不一致, 比如分区:[%s] 是 %s 级分区, 而分区:[%s] 是 %s 级分区. DataX 是通过英文逗号判断您所配置的分区级数的. 正确的格式形如\"pt=${bizdate}, type=0\" ，请您参考示例修改该配置项. ",
                                     firstPartition, firstPartitionDepth, comparedPartition, comparedPartitionDepth));
                 }
             }
@@ -185,7 +185,7 @@ public class OdpsReader extends Reader {
             int tableOriginalPartitionDepth = allStandardPartitions.get(0).split(",").length;
             if (firstPartitionDepth != tableOriginalPartitionDepth) {
                 throw DataXException.asDataXException(OdpsReaderErrorCode.PARTITION_ERROR,
-                        String.format("分区配置错误, 您所配置的分区:%s 的级数:%s 与您要读取的 ODPS 源头表的分区级数:%s 不相等. App 是通过英文逗号判断您所配置的分区级数的.正确的格式形如\"pt=${bizdate}, type=0\" ，请您参考示例修改该配置项.",
+                        String.format("分区配置错误, 您所配置的分区:%s 的级数:%s 与您要读取的 ODPS 源头表的分区级数:%s 不相等. DataX 是通过英文逗号判断您所配置的分区级数的.正确的格式形如\"pt=${bizdate}, type=0\" ，请您参考示例修改该配置项.",
                                 firstPartition, firstPartitionDepth, tableOriginalPartitionDepth));
             }
 

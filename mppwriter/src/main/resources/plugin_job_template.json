@@ -3,6 +3,8 @@
     "parameter": {
         "username": "",
         "password": "",
+        "scfdistUrl": "",
+        "scfdistPath": "",
         "column": [],
         "preSql": [],
         "connection": [
