@@ -1,6 +1,5 @@
 package com.alibaba.datax.plugin.reader.httprestreader.utils;
 
-import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.datax.common.element.*;
 import com.alibaba.datax.common.exception.DataXException;
@@ -56,6 +55,7 @@ public class JSONReader2 {
             JSONObject param = postParams.get(idx);
             content = HttpUtil.createPost(url).body(param.toJSONString(), contentType).execute().body();
 
+            LOG.info("body:{}", content);
             if (StringUtils.isEmpty(content))
                 continue;
 
