@@ -6,10 +6,10 @@
 		<artifactId>datax-all</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>postgresqlwriter</artifactId>
-	<name>postgresqlwriter</name>
+	<artifactId>mppwriter</artifactId>
+	<name>mppwriter</name>
 	<packaging>jar</packaging>
-	<description>writer data into postgresql database</description>
+	<description>writer data into mpp database</description>
 
 	<dependencies>
 		<dependency>
@@ -39,14 +39,29 @@
 			<artifactId>plugin-rdbms-util</artifactId>
 			<version>${datax-project-version}</version>
 		</dependency>
-		
+
 		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.3-1102-jdbc4</version>
+			<groupId>seaboxsql</groupId>
+			<artifactId>jdbc-42.2.9</artifactId>
+			<version>Dev20191029</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/lib/seaboxsql-jdbc-42.2.9-Dev20191029.jar</systemPath>
 		</dependency>
 
-	</dependencies>
+    <dependency>
+      <groupId>com.alibaba.datax</groupId>
+      <artifactId>plugin-unstructured-storage-util</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>5.4.3</version>
+		</dependency>
+
+  </dependencies>
 	<build>
 		<plugins>
 			<!-- compiler plugin -->
